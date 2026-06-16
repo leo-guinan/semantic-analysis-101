@@ -19,32 +19,32 @@
 <text x="100.0" y="354.0" fill="#60a5fa" font-family="Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="11" font-weight="400" text-anchor="start">optimism</text>
 <text x="100.0" y="226.0" fill="#94a3b8" font-family="Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="11" font-weight="400" text-anchor="start">neutral</text>
 <g data-layer="volume-bars">
-<rect x="72.0" y="396.2" width="40.0" height="49.8" rx="2" fill="#334155" opacity="0.74"/>
-<rect x="190.3" y="398.3" width="40.0" height="47.7" rx="2" fill="#334155" opacity="0.74"/>
-<rect x="308.6" y="395.1" width="40.0" height="50.9" rx="2" fill="#334155" opacity="0.74"/>
-<rect x="426.9" y="396.7" width="40.0" height="49.3" rx="2" fill="#334155" opacity="0.74"/>
-<rect x="545.1" y="394.0" width="40.0" height="52.0" rx="2" fill="#334155" opacity="0.74"/>
-<text x="565.1" y="386.0" fill="#cbd5e1" font-family="Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="11" font-weight="700" text-anchor="middle">960 docs</text>
-<rect x="663.4" y="397.5" width="40.0" height="48.5" rx="2" fill="#334155" opacity="0.74"/>
-<rect x="781.7" y="395.9" width="40.0" height="50.1" rx="2" fill="#334155" opacity="0.74"/>
-<rect x="900.0" y="397.2" width="40.0" height="48.8" rx="2" fill="#334155" opacity="0.74"/>
+<rect x="123.8" y="396.2" width="40.0" height="49.8" rx="2" fill="#334155" opacity="0.74"/>
+<rect x="227.2" y="398.3" width="40.0" height="47.7" rx="2" fill="#334155" opacity="0.74"/>
+<rect x="330.8" y="395.1" width="40.0" height="50.9" rx="2" fill="#334155" opacity="0.74"/>
+<rect x="434.2" y="396.7" width="40.0" height="49.3" rx="2" fill="#334155" opacity="0.74"/>
+<rect x="537.8" y="394.0" width="40.0" height="52.0" rx="2" fill="#334155" opacity="0.74"/>
+<text x="557.8" y="386.0" fill="#cbd5e1" font-family="Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="11" font-weight="700" text-anchor="middle">960 docs</text>
+<rect x="641.2" y="397.5" width="40.0" height="48.5" rx="2" fill="#334155" opacity="0.74"/>
+<rect x="744.8" y="395.9" width="40.0" height="50.1" rx="2" fill="#334155" opacity="0.74"/>
+<rect x="848.2" y="397.2" width="40.0" height="48.8" rx="2" fill="#334155" opacity="0.74"/>
 </g>
 <g data-layer="semantic-lines">
-<polyline points="92.0,230.4 210.3,229.9 328.6,232.5 446.9,228.2 565.1,233.7 683.4,224.8 801.7,229.4 920.0,227.7" fill="none" stroke="#f8fafc" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/>
-<polyline points="92.0,150.7 210.3,150.6 328.6,148.8 446.9,153.5 565.1,149.1 683.4,152.9 801.7,150.3 920.0,151.7" fill="none" stroke="#60a5fa" stroke-width="1.9" opacity="0.72" stroke-linejoin="round"/>
-<polyline points="92.0,147.1 210.3,144.7 328.6,147.6 446.9,145.6 565.1,146.6 683.4,144.9 801.7,145.8 920.0,146.1" fill="none" stroke="#f87171" stroke-width="1.9" opacity="0.72" stroke-linejoin="round"/>
-<circle cx="92.0" cy="230.4" r="4.5" fill="#f8fafc" stroke="#09111f" stroke-width="1.5"/>
-<circle cx="210.3" cy="229.9" r="4.5" fill="#f8fafc" stroke="#09111f" stroke-width="1.5"/>
-<circle cx="328.6" cy="232.5" r="4.5" fill="#f8fafc" stroke="#09111f" stroke-width="1.5"/>
-<circle cx="446.9" cy="228.2" r="4.5" fill="#f8fafc" stroke="#09111f" stroke-width="1.5"/>
-<circle cx="565.1" cy="233.7" r="4.5" fill="#f8fafc" stroke="#09111f" stroke-width="1.5"/>
-<circle cx="683.4" cy="224.8" r="4.5" fill="#f8fafc" stroke="#09111f" stroke-width="1.5"/>
-<circle cx="801.7" cy="229.4" r="4.5" fill="#f8fafc" stroke="#09111f" stroke-width="1.5"/>
-<circle cx="920.0" cy="227.7" r="4.5" fill="#f8fafc" stroke="#09111f" stroke-width="1.5"/>
+<polyline points="143.8,230.4 247.2,229.9 350.8,232.5 454.2,228.2 557.8,233.7 661.2,224.8 764.8,229.4 868.2,227.7" fill="none" stroke="#f8fafc" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/>
+<polyline points="143.8,150.7 247.2,150.6 350.8,148.8 454.2,153.5 557.8,149.1 661.2,152.9 764.8,150.3 868.2,151.7" fill="none" stroke="#60a5fa" stroke-width="1.9" opacity="0.72" stroke-linejoin="round"/>
+<polyline points="143.8,147.1 247.2,144.7 350.8,147.6 454.2,145.6 557.8,146.6 661.2,144.9 764.8,145.8 868.2,146.1" fill="none" stroke="#f87171" stroke-width="1.9" opacity="0.72" stroke-linejoin="round"/>
+<circle cx="143.8" cy="230.4" r="4.5" fill="#f8fafc" stroke="#09111f" stroke-width="1.5"/>
+<circle cx="247.2" cy="229.9" r="4.5" fill="#f8fafc" stroke="#09111f" stroke-width="1.5"/>
+<circle cx="350.8" cy="232.5" r="4.5" fill="#f8fafc" stroke="#09111f" stroke-width="1.5"/>
+<circle cx="454.2" cy="228.2" r="4.5" fill="#f8fafc" stroke="#09111f" stroke-width="1.5"/>
+<circle cx="557.8" cy="233.7" r="4.5" fill="#f8fafc" stroke="#09111f" stroke-width="1.5"/>
+<circle cx="661.2" cy="224.8" r="4.5" fill="#f8fafc" stroke="#09111f" stroke-width="1.5"/>
+<circle cx="764.8" cy="229.4" r="4.5" fill="#f8fafc" stroke="#09111f" stroke-width="1.5"/>
+<circle cx="868.2" cy="227.7" r="4.5" fill="#f8fafc" stroke="#09111f" stroke-width="1.5"/>
 </g>
-<text x="92.0" y="470.0" fill="#94a3b8" font-family="Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="10" font-weight="400" text-anchor="middle">&#x27;25-Q1</text>
-<text x="565.1" y="470.0" fill="#94a3b8" font-family="Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="10" font-weight="400" text-anchor="middle">&#x27;26-Q1</text>
-<text x="920.0" y="470.0" fill="#94a3b8" font-family="Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="10" font-weight="400" text-anchor="middle">&#x27;26-Q4</text>
+<text x="143.8" y="470.0" fill="#94a3b8" font-family="Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="10" font-weight="400" text-anchor="middle">&#x27;25-Q1</text>
+<text x="557.8" y="470.0" fill="#94a3b8" font-family="Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="10" font-weight="400" text-anchor="middle">&#x27;26-Q1</text>
+<text x="868.2" y="470.0" fill="#94a3b8" font-family="Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="10" font-weight="400" text-anchor="middle">&#x27;26-Q4</text>
 <circle cx="92" cy="496" r="5" fill="#f8fafc"/>
 <text x="104.0" y="500.0" fill="#d7dde8" font-family="Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="12" font-weight="400" text-anchor="start">α semantic lean</text>
 <rect x="252" y="489" width="15" height="12" fill="#334155" opacity="0.74"/>

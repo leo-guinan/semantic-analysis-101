@@ -44,9 +44,17 @@ BAR_BASE = BAR_TOP + BAR_LANE_H
 
 
 def sx(i: int, n: int) -> float:
-    if n == 1:
+    """X-coordinate for bucket centers.
+
+    Buckets are rendered as slots inside the plot width. The old endpoint scale
+    put the first/last data point exactly on the border, which made centered
+    document bars protrude outside the chart box. Useful if the goal is proving
+    SVG can betray you quietly. Not useful for a quiz.
+    """
+    if n <= 1:
         return LEFT + PLOT_W / 2
-    return LEFT + (PLOT_W * i / (n - 1))
+    slot_w = PLOT_W / n
+    return LEFT + slot_w * (i + 0.5)
 
 
 def sy_alpha(value: float) -> float:

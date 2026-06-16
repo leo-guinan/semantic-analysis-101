@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 
 from scripts import render_svg_charts as charts
 
@@ -31,3 +32,15 @@ def test_chart_renderer_writes_document_counts_for_low_volume_bars():
     svg = charts.render_fixture(charts.DATA_DIR / "misleading-volume-optimism-doom.fixture.json", "misleading-volume")
     assert "18 docs" in svg
     assert "1,400 docs" in svg
+
+
+def test_volume_bars_stay_inside_the_bar_lane_box():
+    svg = charts.render_fixture(charts.DATA_DIR / "misleading-volume-optimism-doom.fixture.json", "misleading-volume")
+    volume_layer = svg.split('data-layer="volume-bars"', 1)[1].split('</g>', 1)[0]
+    rects = re.findall(r'<rect x="([0-9.]+)" y="([0-9.]+)" width="([0-9.]+)" height="([0-9.]+)"', volume_layer)
+    assert rects, "expected document-count bars"
+    for x_raw, _y_raw, width_raw, _height_raw in rects:
+        x = float(x_raw)
+        width = float(width_raw)
+        assert x >= charts.LEFT
+        assert x + width <= charts.LEFT + charts.PLOT_W
