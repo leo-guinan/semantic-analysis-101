@@ -25,3 +25,9 @@ def test_chart_renderer_keeps_bars_in_dedicated_lower_lane():
     assert "data-layer=\"volume-bars\"" in svg
     assert "data-layer=\"semantic-lines\"" in svg
     assert "low volume" in svg
+
+
+def test_chart_renderer_writes_document_counts_for_low_volume_bars():
+    svg = charts.render_fixture(charts.DATA_DIR / "misleading-volume-optimism-doom.fixture.json", "misleading-volume")
+    assert "18 docs" in svg
+    assert "1,400 docs" in svg

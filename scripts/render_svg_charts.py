@@ -130,6 +130,8 @@ def render_fixture(path: Path, slug: str) -> str:
         parts.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{bar_w:.1f}" height="{h:.1f}" rx="2" fill="{color}" opacity="0.74"/>')
         if is_low_volume:
             parts.append(text(x + bar_w / 2, y - 8, f"low volume: {c} docs", 12, "#fbbf24", "middle", "700"))
+        elif c == max_count:
+            parts.append(text(x + bar_w / 2, y - 8, f"{c:,} docs", 11, "#cbd5e1", "middle", "700"))
     parts.append('</g>')
 
     # Semantic lines.

@@ -23,9 +23,22 @@ def test_chart_interpretation_game_has_scoring_and_explanations():
         "18 documents",
         "No meaningful semantic drift",
         "both poles are high",
+        "poles are not clean opposites",
+        "correlated",
+        "divergence is likely noise",
         "Try again",
     ]:
         assert phrase.lower() in html.lower()
+
+
+def test_close_margin_case_treats_correlated_poles_as_measurement_problem():
+    html = GAME.read_text().lower()
+    close_margin_start = html.index('id: "close-margin"')
+    close_margin_block = html[close_margin_start : html.index("let current", close_margin_start)]
+    assert "not clean opposites" in close_margin_block
+    assert "correlated" in close_margin_block
+    assert "divergence is likely noise" in close_margin_block
+    assert "not even a caveat" in close_margin_block
 
 
 def test_readme_links_to_quiz_game():

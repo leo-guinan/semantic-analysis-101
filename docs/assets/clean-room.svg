@@ -28,6 +28,7 @@
 <rect x="693.0" y="400.8" width="40.0" height="45.2" rx="2" fill="#334155" opacity="0.74"/>
 <rect x="796.5" y="398.1" width="40.0" height="47.9" rx="2" fill="#334155" opacity="0.74"/>
 <rect x="900.0" y="394.0" width="40.0" height="52.0" rx="2" fill="#334155" opacity="0.74"/>
+<text x="920.0" y="386.0" fill="#cbd5e1" font-family="Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="11" font-weight="700" text-anchor="middle">190 docs</text>
 </g>
 <g data-layer="semantic-lines">
 <polyline points="92.0,274.3 195.5,278.2 299.0,271.9 402.5,238.4 506.0,238.4 609.5,233.6 713.0,189.5 816.5,190.6 920.0,188.1" fill="none" stroke="#f8fafc" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/>

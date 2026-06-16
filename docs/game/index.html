@@ -171,7 +171,7 @@
     const QUESTIONS = [
       {
         id: "clean-room",
-        chart: "../assets/clean-room.svg?v=cdc13ad",
+        chart: "../assets/clean-room.svg?v=ben-doc-counts",
         label: "Clean-room phase shift",
         prompt: "What is the safest interpretation of this chart?",
         answer: "a",
@@ -185,7 +185,7 @@
       },
       {
         id: "misleading-volume",
-        chart: "../assets/misleading-volume.svg?v=cdc13ad",
+        chart: "../assets/misleading-volume.svg?v=ben-doc-counts",
         label: "Misleading low-volume spike",
         prompt: "The April bucket spikes sharply. What should you say?",
         answer: "c",
@@ -199,7 +199,7 @@
       },
       {
         id: "null-shuffled",
-        chart: "../assets/null-shuffled.svg?v=cdc13ad",
+        chart: "../assets/null-shuffled.svg?v=ben-doc-counts",
         label: "Null / shuffled control",
         prompt: "What does this chart support?",
         answer: "b",
@@ -213,16 +213,16 @@
       },
       {
         id: "close-margin",
-        chart: "../assets/close-margin.svg?v=cdc13ad",
+        chart: "../assets/close-margin.svg?v=ben-doc-counts",
         label: "Close-margin / high-correlation",
         prompt: "Both raw cosine lines are high and close. What is the safest reading?",
         answer: "d",
-        explanation: "Correct: both poles are high, and the margin is small. Do not turn a tiny difference into a strong directional claim just because alpha gives you a single line.",
+        explanation: "Correct: both poles are high and correlated, so these poles are not clean opposites. The topic may simply be much discussed, and the small divergence is likely noise from word choice. Not even a caveat makes the directional claim meaningful.",
         options: [
           ["a", "The chart proves AI is clearly doom-coded."],
-          ["b", "The lower pole has no semantic relationship to the concept."],
+          ["b", "The topic is much discussed and consistently so; the poles are both picking up topical intensity."],
           ["c", "Only the alpha line matters; raw cosine margins are decoration."],
-          ["d", "Both poles are high; doom is slightly higher in places, but the margin is small, so use weak language."],
+          ["d", "The poles are not clean opposites: they are correlated, and the divergence is likely noise from word choice — not even a caveat would make a directional claim meaningful."],
         ],
       },
     ];

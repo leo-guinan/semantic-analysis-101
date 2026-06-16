@@ -24,6 +24,7 @@
 <rect x="308.6" y="395.1" width="40.0" height="50.9" rx="2" fill="#334155" opacity="0.74"/>
 <rect x="426.9" y="396.7" width="40.0" height="49.3" rx="2" fill="#334155" opacity="0.74"/>
 <rect x="545.1" y="394.0" width="40.0" height="52.0" rx="2" fill="#334155" opacity="0.74"/>
+<text x="565.1" y="386.0" fill="#cbd5e1" font-family="Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="11" font-weight="700" text-anchor="middle">960 docs</text>
 <rect x="663.4" y="397.5" width="40.0" height="48.5" rx="2" fill="#334155" opacity="0.74"/>
 <rect x="781.7" y="395.9" width="40.0" height="50.1" rx="2" fill="#334155" opacity="0.74"/>
 <rect x="900.0" y="397.2" width="40.0" height="48.8" rx="2" fill="#334155" opacity="0.74"/>
