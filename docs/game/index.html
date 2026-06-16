@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Chart Interpretation Quiz · Semantic Analysis 101</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #07101d;
+      --panel: #0f1b2e;
+      --panel-2: #13233a;
+      --text: #eef4ff;
+      --muted: #9fb0c7;
+      --line: #26384f;
+      --good: #34d399;
+      --bad: #fb7185;
+      --warn: #fbbf24;
+      --accent: #93c5fd;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top left, #12233d, var(--bg) 46rem);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+    main { max-width: 1120px; margin: 0 auto; padding: 28px 18px 56px; }
+    header {
+      border: 1px solid var(--line);
+      background: rgba(15, 27, 46, 0.88);
+      border-radius: 22px;
+      padding: 28px;
+      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.22);
+    }
+    h1 { margin: 0 0 8px; font-size: clamp(2rem, 4vw, 4rem); letter-spacing: -0.05em; line-height: 0.95; }
+    h2 { margin: 0 0 10px; font-size: 1.45rem; }
+    p { color: var(--muted); }
+    a { color: var(--accent); }
+    .lede { font-size: 1.13rem; max-width: 78ch; }
+    .rules {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .rule {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(19, 35, 58, 0.72);
+      color: #dce8f8;
+      font-size: 0.95rem;
+    }
+    .quiz-card {
+      margin-top: 22px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(15, 27, 46, 0.92);
+      overflow: hidden;
+    }
+    .chart-wrap { padding: 18px; background: #09111f; border-bottom: 1px solid var(--line); }
+    .chart-wrap img { width: 100%; display: block; border-radius: 14px; border: 1px solid #22334c; background: #0b1524; }
+    .question { padding: 24px; }
+    .meta { color: var(--warn); font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.08em; }
+    .options { display: grid; gap: 10px; margin: 18px 0; }
+    button.option, button.primary, button.secondary {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--panel-2);
+      color: var(--text);
+      padding: 13px 14px;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+      transition: border-color 0.15s, transform 0.15s, background 0.15s;
+    }
+    button.option:hover, button.primary:hover, button.secondary:hover { border-color: #5b7aa5; transform: translateY(-1px); }
+    button.option[aria-pressed="true"] { border-color: var(--accent); background: #183556; }
+    button.option.correct { border-color: var(--good); background: rgba(52, 211, 153, 0.12); }
+    button.option.incorrect { border-color: var(--bad); background: rgba(251, 113, 133, 0.12); }
+    .explanation {
+      display: none;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #0b1524;
+      margin-top: 16px;
+    }
+    .explanation.show { display: block; }
+    .explanation strong { color: #fff; }
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+    button.primary { background: #2563eb; border-color: #60a5fa; font-weight: 800; text-align: center; }
+    button.secondary { background: transparent; text-align: center; }
+    .scorebar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 18px 0 0;
+      color: var(--muted);
+    }
+    .meter { flex: 1; height: 10px; background: #111c2e; border-radius: 999px; overflow: hidden; border: 1px solid var(--line); }
+    .meter > span { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, var(--bad), var(--warn), var(--good)); transition: width 0.2s; }
+    .result {
+      display: none;
+      margin-top: 22px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(15, 27, 46, 0.92);
+    }
+    .result.show { display: block; }
+    .result h2 { font-size: 2rem; }
+    .pill { display: inline-block; padding: 4px 9px; border-radius: 999px; background: #17253b; border: 1px solid var(--line); color: #cbd5e1; margin-right: 6px; font-size: 0.86rem; }
+    footer { margin-top: 28px; color: var(--muted); font-size: 0.92rem; }
+    @media (max-width: 760px) {
+      .rules { grid-template-columns: 1fr; }
+      header, .question { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="meta">Semantic Analysis 101</p>
+      <h1>Chart Interpretation Quiz</h1>
+      <p class="lede">A small game for testing whether you read semantic trend graphs as evidence, or as decorative permission to say the thing you already wanted to say.</p>
+      <div class="rules" aria-label="Game rules">
+        <div class="rule"><strong>Pick the safest interpretation.</strong><br />Not the most exciting one.</div>
+        <div class="rule"><strong>Watch document counts.</strong><br />A low-volume spike is where confidence goes to die.</div>
+        <div class="rule"><strong>Check raw margins.</strong><br />If both poles are high and close, weaken the claim.</div>
+      </div>
+      <div class="scorebar" aria-live="polite">
+        <span id="progress">Question 1 of 4</span>
+        <div class="meter" aria-hidden="true"><span id="meterFill"></span></div>
+        <span id="score">score: 0</span>
+      </div>
+    </header>
+
+    <section class="quiz-card" aria-live="polite">
+      <div class="chart-wrap">
+        <img id="chart" src="../assets/clean-room.svg" alt="Semantic trend chart for current quiz question" />
+      </div>
+      <div class="question">
+        <p class="meta" id="caseLabel">clean-room</p>
+        <h2 id="questionText">What is the safest interpretation?</h2>
+        <div id="options" class="options"></div>
+        <div id="explanation" class="explanation" data-role="explanation"></div>
+        <div class="actions">
+          <button id="submit" class="primary" type="button">Submit answer</button>
+          <button id="next" class="secondary" type="button" disabled>Next chart</button>
+          <button id="retry" class="secondary" type="button">Try again</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="result" class="result" aria-live="polite">
+      <h2 id="resultTitle">Result</h2>
+      <p id="resultBody"></p>
+      <p><span class="pill">low-volume</span><span class="pill">null control</span><span class="pill">raw cosine margin</span><span class="pill">screenshot safety</span></p>
+    </section>
+
+    <footer>
+      <p>Source guide: <a href="../../README.md">Semantic Analysis 101</a>. Experiment harness: <a href="https://github.com/leo-guinan/semax-view-experiments">semax-view-experiments</a>.</p>
+    </footer>
+  </main>
+
+  <script>
+    const QUESTIONS = [
+      {
+        id: "clean-room",
+        chart: "../assets/clean-room.svg",
+        label: "Clean-room phase shift",
+        prompt: "What is the safest interpretation of this chart?",
+        answer: "a",
+        explanation: "Correct: the synthetic corpus clearly moves from optimism to neutral to doom. This is the easy grammar test. It does not prove anything about real-world AI discourse.",
+        options: [
+          ["a", "The synthetic corpus shifts from optimism to neutral to doom across the buckets."],
+          ["b", "AI discourse in the real world became doom-coded."],
+          ["c", "There is no visible trend at all."],
+          ["d", "The late doom phase is untrustworthy because every late bucket is low-volume."],
+        ],
+      },
+      {
+        id: "misleading-volume",
+        chart: "../assets/misleading-volume.svg",
+        label: "Misleading low-volume spike",
+        prompt: "The April bucket spikes sharply. What should you say?",
+        answer: "c",
+        explanation: "Correct: the spike is visually dramatic, but it is based on only 18 documents. The safe interpretation names the low-volume caveat before any public claim.",
+        options: [
+          ["a", "AI suddenly became strongly doom-coded in April."],
+          ["b", "The spike proves a lasting shift because the line moved sharply."],
+          ["c", "There is a visible spike, but it is low-volume: 18 documents, so do not quote it without a caveat."],
+          ["d", "Document counts do not matter if the semantic score is high."],
+        ],
+      },
+      {
+        id: "null-shuffled",
+        chart: "../assets/null-shuffled.svg",
+        label: "Null / shuffled control",
+        prompt: "What does this chart support?",
+        answer: "b",
+        explanation: "Correct: No meaningful semantic drift is visible. Small wiggles around neutral are not a license to invent a story. Tedious, but honest.",
+        options: [
+          ["a", "A late-year doom trend is emerging."],
+          ["b", "No meaningful semantic drift is present; small wiggles are expected noise."],
+          ["c", "The corpus clearly moves from optimism to doom."],
+          ["d", "The highest alpha bucket should be quoted as the main result."],
+        ],
+      },
+      {
+        id: "close-margin",
+        chart: "../assets/close-margin.svg",
+        label: "Close-margin / high-correlation",
+        prompt: "Both raw cosine lines are high and close. What is the safest reading?",
+        answer: "d",
+        explanation: "Correct: both poles are high, and the margin is small. Do not turn a tiny difference into a strong directional claim just because alpha gives you a single line.",
+        options: [
+          ["a", "The chart proves AI is clearly doom-coded."],
+          ["b", "The lower pole has no semantic relationship to the concept."],
+          ["c", "Only the alpha line matters; raw cosine margins are decoration."],
+          ["d", "Both poles are high; doom is slightly higher in places, but the margin is small, so use weak language."],
+        ],
+      },
+    ];
+
+    let current = 0;
+    let score = 0;
+    let selected = null;
+    let answered = false;
+
+    const chart = document.getElementById("chart");
+    const caseLabel = document.getElementById("caseLabel");
+    const questionText = document.getElementById("questionText");
+    const options = document.getElementById("options");
+    const explanation = document.getElementById("explanation");
+    const submit = document.getElementById("submit");
+    const next = document.getElementById("next");
+    const retry = document.getElementById("retry");
+    const progress = document.getElementById("progress");
+    const scoreEl = document.getElementById("score");
+    const meterFill = document.getElementById("meterFill");
+    const result = document.getElementById("result");
+    const resultTitle = document.getElementById("resultTitle");
+    const resultBody = document.getElementById("resultBody");
+
+    function renderQuestion() {
+      const q = QUESTIONS[current];
+      selected = null;
+      answered = false;
+      chart.src = q.chart;
+      chart.alt = `${q.label} semantic trend chart`;
+      caseLabel.textContent = q.label;
+      caseLabel.dataset.caseId = q.id;
+      questionText.textContent = q.prompt;
+      explanation.className = "explanation";
+      explanation.textContent = "";
+      options.innerHTML = "";
+      q.options.forEach(([key, label]) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "option";
+        button.setAttribute("data-answer", key);
+        button.setAttribute("aria-pressed", "false");
+        button.textContent = label;
+        button.addEventListener("click", () => selectOption(button));
+        options.appendChild(button);
+      });
+      submit.disabled = false;
+      next.disabled = true;
+      next.textContent = current === QUESTIONS.length - 1 ? "Show score" : "Next chart";
+      updateStatus();
+    }
+
+    function selectOption(button) {
+      if (answered) return;
+      selected = button.dataset.answer;
+      document.querySelectorAll("button.option").forEach((b) => b.setAttribute("aria-pressed", "false"));
+      button.setAttribute("aria-pressed", "true");
+    }
+
+    function submitAnswer() {
+      if (answered) return;
+      if (!selected) {
+        explanation.textContent = "Pick an answer first. The chart will wait. Eternity has practice.";
+        explanation.className = "explanation show";
+        return;
+      }
+      const q = QUESTIONS[current];
+      answered = true;
+      const correct = selected === q.answer;
+      if (correct) score += 1;
+      document.querySelectorAll("button.option").forEach((button) => {
+        const key = button.dataset.answer;
+        if (key === q.answer) button.classList.add("correct");
+        if (key === selected && key !== q.answer) button.classList.add("incorrect");
+      });
+      explanation.innerHTML = `<strong>${correct ? "Correct." : "Not quite."}</strong> ${q.explanation}`;
+      explanation.className = "explanation show";
+      submit.disabled = true;
+      next.disabled = false;
+      updateStatus();
+    }
+
+    function nextQuestion() {
+      if (!answered) return;
+      if (current < QUESTIONS.length - 1) {
+        current += 1;
+        renderQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      const pct = Math.round((score / QUESTIONS.length) * 100);
+      result.className = "result show";
+      resultTitle.textContent = `Score: ${score}/${QUESTIONS.length} (${pct}%)`;
+      if (score === QUESTIONS.length) {
+        resultBody.textContent = "You chose the safest reading every time. This is suspiciously competent, but we will allow it.";
+      } else if (score >= 2) {
+        resultBody.textContent = "You caught some traps. Review the missed cases before quoting a semantic trend publicly.";
+      } else {
+        resultBody.textContent = "The chart ate you. Try again, paying special attention to document counts, null data, and tiny raw-cosine margins.";
+      }
+      result.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function resetGame() {
+      current = 0;
+      score = 0;
+      selected = null;
+      answered = false;
+      result.className = "result";
+      renderQuestion();
+    }
+
+    function updateStatus() {
+      progress.textContent = `Question ${current + 1} of ${QUESTIONS.length}`;
+      scoreEl.textContent = `score: ${score}`;
+      meterFill.style.width = `${(current / QUESTIONS.length) * 100}%`;
+      if (answered && current === QUESTIONS.length - 1) meterFill.style.width = "100%";
+    }
+
+    submit.addEventListener("click", submitAnswer);
+    next.addEventListener("click", nextQuestion);
+    retry.addEventListener("click", resetGame);
+    renderQuestion();
+  </script>
+</body>
+</html>

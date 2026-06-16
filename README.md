@@ -25,6 +25,7 @@ Read these in order:
 3. [Four teaching datasets](docs/lessons/03-four-teaching-datasets.md)
 4. [Common interpretation failures](docs/lessons/04-common-failures.md)
 5. [Checklist before quoting a semantic trend](docs/checklists/before-quoting.md)
+6. [Chart Interpretation Quiz](docs/game/index.html) — a small multiple-choice game using the four synthetic charts.
 
 ## Four example graphs
 
