@@ -1,0 +1,108 @@
+{
+  "dataset_id": "synthetic_close_margin_high_correlation_v1",
+  "measurement_name": "Synthetic AI optimism vs doom \u2014 close margin",
+  "datasource_label": "synthetic close-margin high-correlation corpus",
+  "bucket_size": "quarterly",
+  "axis": {
+    "concept_terms": [
+      "AI",
+      "artificial intelligence"
+    ],
+    "pole_a_label": "optimism",
+    "pole_a_terms": [
+      "optimism",
+      "hope",
+      "progress"
+    ],
+    "pole_b_label": "doom",
+    "pole_b_terms": [
+      "doom",
+      "risk",
+      "danger"
+    ],
+    "alpha_direction": "0=pole_a/optimism, 1=pole_b/doom"
+  },
+  "total_documents": 7330,
+  "timeseries": [
+    {
+      "bucket": "2025-Q1",
+      "bucket_index": 0,
+      "expected_phase": "high_correlation_close_margin",
+      "alpha": 0.5137,
+      "cosine_to_pole_a": 0.8202,
+      "cosine_to_pole_b": 0.8342,
+      "document_count": 920
+    },
+    {
+      "bucket": "2025-Q2",
+      "bucket_index": 1,
+      "expected_phase": "high_correlation_close_margin",
+      "alpha": 0.5157,
+      "cosine_to_pole_a": 0.8209,
+      "cosine_to_pole_b": 0.8434,
+      "document_count": 880
+    },
+    {
+      "bucket": "2025-Q3",
+      "bucket_index": 2,
+      "expected_phase": "high_correlation_close_margin",
+      "alpha": 0.5057,
+      "cosine_to_pole_a": 0.8277,
+      "cosine_to_pole_b": 0.8324,
+      "document_count": 940
+    },
+    {
+      "bucket": "2025-Q4",
+      "bucket_index": 3,
+      "expected_phase": "high_correlation_close_margin",
+      "alpha": 0.5224,
+      "cosine_to_pole_a": 0.8097,
+      "cosine_to_pole_b": 0.84,
+      "document_count": 910
+    },
+    {
+      "bucket": "2026-Q1",
+      "bucket_index": 4,
+      "expected_phase": "high_correlation_close_margin",
+      "alpha": 0.5013,
+      "cosine_to_pole_a": 0.8266,
+      "cosine_to_pole_b": 0.8362,
+      "document_count": 960
+    },
+    {
+      "bucket": "2026-Q2",
+      "bucket_index": 5,
+      "expected_phase": "high_correlation_close_margin",
+      "alpha": 0.5355,
+      "cosine_to_pole_a": 0.8118,
+      "cosine_to_pole_b": 0.8427,
+      "document_count": 895
+    },
+    {
+      "bucket": "2026-Q3",
+      "bucket_index": 6,
+      "expected_phase": "high_correlation_close_margin",
+      "alpha": 0.5177,
+      "cosine_to_pole_a": 0.8221,
+      "cosine_to_pole_b": 0.8394,
+      "document_count": 925
+    },
+    {
+      "bucket": "2026-Q4",
+      "bucket_index": 7,
+      "expected_phase": "high_correlation_close_margin",
+      "alpha": 0.5244,
+      "cosine_to_pole_a": 0.8167,
+      "cosine_to_pole_b": 0.8382,
+      "document_count": 900
+    }
+  ],
+  "expected_interpretation": {
+    "latest_lean": "tiny_doom_lean",
+    "least_trustworthy_bucket": null,
+    "correct_interpretation": "poles_are_both_high_and_difference_is_tiny",
+    "should_claim_strong_lean": false,
+    "requires_uncertainty_language": true,
+    "notes": "Both poles score high and close together. A good view should not turn tiny high-correlation differences into a confident directional story."
+  }
+}
