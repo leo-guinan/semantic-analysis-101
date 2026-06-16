@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
-"""Render simple teaching SVGs from Semantic Axis fixture JSON files."""
+"""Render teaching SVGs from Semantic Axis fixture JSON files.
+
+The graph is deliberately conservative: semantic lines get their own lane,
+document-count bars get a separate lower lane, and labels have reserved margins.
+The previous version drew the title and axis labels inside the plot. One might call
+that "dense" if one were feeling charitable. We are not.
+"""
 from __future__ import annotations
 
 import html
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "data"
@@ -18,14 +24,23 @@ DATASETS = {
     "close-margin": "close-margin-high-correlation.fixture.json",
 }
 
-WIDTH = 920
-HEIGHT = 430
-LEFT = 72
-RIGHT = 40
-TOP = 54
-BOTTOM = 76
+WIDTH = 1040
+HEIGHT = 560
+CARD_X = 24
+CARD_Y = 24
+CARD_W = WIDTH - 48
+CARD_H = HEIGHT - 48
+LEFT = 92
+RIGHT = 120
+TOP = 104
+LINE_PLOT_H = 260
+BAR_LANE_GAP = 18
+BAR_LANE_H = 64
+BOTTOM = HEIGHT - (TOP + LINE_PLOT_H + BAR_LANE_GAP + BAR_LANE_H)
 PLOT_W = WIDTH - LEFT - RIGHT
-PLOT_H = HEIGHT - TOP - BOTTOM
+LINE_BOTTOM = TOP + LINE_PLOT_H
+BAR_TOP = LINE_BOTTOM + BAR_LANE_GAP
+BAR_BASE = BAR_TOP + BAR_LANE_H
 
 
 def sx(i: int, n: int) -> float:
@@ -36,15 +51,15 @@ def sx(i: int, n: int) -> float:
 
 def sy_alpha(value: float) -> float:
     # Teaching range: alpha usually 0..1, with 0.5 neutral. Keep full scale visible.
-    return TOP + (1.0 - value) * PLOT_H
+    return TOP + (1.0 - value) * LINE_PLOT_H
 
 
 def sy_cos(value: float) -> float:
     # Cosines in fixtures roughly 0.4..0.9. Use 0..1 to avoid exaggeration.
-    return TOP + (1.0 - value) * PLOT_H
+    return TOP + (1.0 - value) * LINE_PLOT_H
 
 
-def points(values: list[float], y_fn) -> str:
+def points(values: list[float], y_fn: Callable[[float], float]) -> str:
     return " ".join(f"{sx(i, len(values)):.1f},{y_fn(v):.1f}" for i, v in enumerate(values))
 
 
@@ -57,8 +72,19 @@ def text(x: float, y: float, value: str, size: int = 13, color: str = "#d7dde8",
     return f'<text x="{x:.1f}" y="{y:.1f}" fill="{color}" font-family="Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="{size}" font-weight="{weight}" text-anchor="{anchor}">{html.escape(value)}</text>'
 
 
+def safe_title(value: str, max_chars: int = 58) -> str:
+    value = " ".join(value.split())
+    if len(value) <= max_chars:
+        return value
+    return value[: max_chars - 1].rstrip() + "…"
+
+
+def bucket_label(label: str) -> str:
+    return label.replace("2025-", "'25-").replace("2026-", "'26-")
+
+
 def render_fixture(path: Path, slug: str) -> str:
-    fixture = json.loads(path.read_text())
+    fixture: dict[str, Any] = json.loads(path.read_text())
     ts = fixture["timeseries"]
     labels = [b["bucket"] for b in ts]
     alphas = [float(b["alpha"]) for b in ts]
@@ -74,55 +100,67 @@ def render_fixture(path: Path, slug: str) -> str:
     parts: list[str] = []
     parts.append(f'<svg xmlns="http://www.w3.org/2000/svg" width="{WIDTH}" height="{HEIGHT}" viewBox="0 0 {WIDTH} {HEIGHT}" role="img" aria-label="Semantic trend teaching chart for {html.escape(slug)}">')
     parts.append('<rect width="100%" height="100%" fill="#09111f"/>')
-    parts.append('<rect x="20" y="20" width="880" height="390" rx="18" fill="#101b2e" stroke="#27364d"/>')
-    parts.append(text(42, 48, fixture["measurement_name"], 20, "#f4f7fb", weight="700"))
-    parts.append(text(42, 72, f"Synthetic teaching fixture · {total:,} documents · {len(ts)} buckets", 13, "#94a3b8"))
+    parts.append(f'<rect x="{CARD_X}" y="{CARD_Y}" width="{CARD_W}" height="{CARD_H}" rx="18" fill="#101b2e" stroke="#27364d"/>')
+    parts.append(text(48, 56, safe_title(fixture["measurement_name"]), 21, "#f4f7fb", weight="700"))
+    parts.append(text(48, 82, f"Synthetic teaching fixture · {total:,} documents · {len(ts)} buckets", 13, "#94a3b8"))
 
-    # plot area
-    parts.append('<rect x="72" y="54" width="808" height="300" fill="#0c1627" stroke="#203047"/>')
-    for a in [0.25, 0.5, 0.75]:
+    # Plot and bar lanes. Kept separate so bars do not visually chew through the semantic lines.
+    parts.append(f'<rect x="{LEFT}" y="{TOP}" width="{PLOT_W}" height="{LINE_PLOT_H}" fill="#0c1627" stroke="#203047"/>')
+    parts.append(f'<rect x="{LEFT}" y="{BAR_TOP}" width="{PLOT_W}" height="{BAR_LANE_H}" fill="#0a1424" stroke="#203047"/>')
+    parts.append(text(LEFT, TOP - 12, "Semantic similarity / α", 12, "#94a3b8"))
+    parts.append(text(LEFT + PLOT_W, BAR_TOP - 8, f"Document count, max {max_count:,}", 12, "#94a3b8", "end"))
+
+    for a in [0.25, 0.5, 0.75, 1.0]:
         y = sy_alpha(a)
         parts.append(line(LEFT, y, LEFT + PLOT_W, y, "#23344d", 1, "4 5" if a == 0.5 else None))
-        parts.append(text(52, y + 4, f"{a:.2f}", 11, "#7f8ea3", "end"))
-    parts.append(text(48, TOP + 8, "doom", 11, "#f87171", "end"))
-    parts.append(text(48, TOP + PLOT_H + 4, "optimism", 11, "#60a5fa", "end"))
-    parts.append(text(LEFT + PLOT_W + 8, sy_alpha(0.5) + 4, "neutral α=0.5", 11, "#94a3b8"))
+        parts.append(text(LEFT - 16, y + 4, f"{a:.2f}", 11, "#7f8ea3", "end"))
+    parts.append(text(LEFT + 8, TOP + 18, "doom", 11, "#f87171"))
+    parts.append(text(LEFT + 8, LINE_BOTTOM - 10, "optimism", 11, "#60a5fa"))
+    parts.append(text(LEFT + 8, sy_alpha(0.5) - 8, "neutral", 11, "#94a3b8"))
 
-    # volume bars, behind lines
-    bar_w = min(34, PLOT_W / max(len(ts), 1) * 0.52)
+    # Volume bars, in a dedicated lower lane.
+    parts.append('<g data-layer="volume-bars">')
+    bar_w = min(40, PLOT_W / max(len(ts), 1) * 0.46)
     for i, c in enumerate(counts):
         x = sx(i, len(ts)) - bar_w / 2
-        h = max(3, (c / max_count) * 76)
-        y = TOP + PLOT_H - h
-        color = "#f59e0b" if c == min_count and min_count < max_count * 0.1 else "#334155"
-        parts.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{bar_w:.1f}" height="{h:.1f}" fill="{color}" opacity="0.72"/>')
+        h = max(4, (c / max_count) * (BAR_LANE_H - 12))
+        y = BAR_BASE - h
+        is_low_volume = c == min_count and min_count < max_count * 0.1
+        color = "#f59e0b" if is_low_volume else "#334155"
+        parts.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{bar_w:.1f}" height="{h:.1f}" rx="2" fill="{color}" opacity="0.74"/>')
+        if is_low_volume:
+            parts.append(text(x + bar_w / 2, y - 8, f"low volume: {c} docs", 12, "#fbbf24", "middle", "700"))
+    parts.append('</g>')
 
-    # lines
-    parts.append(f'<polyline points="{points(alphas, sy_alpha)}" fill="none" stroke="#f8fafc" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>')
-    parts.append(f'<polyline points="{points(cos_a, sy_cos)}" fill="none" stroke="#60a5fa" stroke-width="1.8" opacity="0.65" stroke-linejoin="round"/>')
-    parts.append(f'<polyline points="{points(cos_b, sy_cos)}" fill="none" stroke="#f87171" stroke-width="1.8" opacity="0.65" stroke-linejoin="round"/>')
-
-    for i, (label, a, c) in enumerate(zip(labels, alphas, counts)):
+    # Semantic lines.
+    parts.append('<g data-layer="semantic-lines">')
+    parts.append(f'<polyline points="{points(alphas, sy_alpha)}" fill="none" stroke="#f8fafc" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/>')
+    parts.append(f'<polyline points="{points(cos_a, sy_cos)}" fill="none" stroke="#60a5fa" stroke-width="1.9" opacity="0.72" stroke-linejoin="round"/>')
+    parts.append(f'<polyline points="{points(cos_b, sy_cos)}" fill="none" stroke="#f87171" stroke-width="1.9" opacity="0.72" stroke-linejoin="round"/>')
+    for i, a in enumerate(alphas):
         x = sx(i, len(ts))
         parts.append(f'<circle cx="{x:.1f}" cy="{sy_alpha(a):.1f}" r="4.5" fill="#f8fafc" stroke="#09111f" stroke-width="1.5"/>')
-        if i == 0 or i == len(ts) - 1 or c == min_count:
-            parts.append(text(x, TOP + PLOT_H + 22, label, 10, "#94a3b8", "middle"))
-        if c == min_count and min_count < max_count * 0.1:
-            parts.append(text(x, sy_alpha(a) - 18, f"low volume: {c} docs", 12, "#fbbf24", "middle", "700"))
+    parts.append('</g>')
 
-    # legend
-    lx = LEFT + 10
-    ly = HEIGHT - 48
+    # X labels: show endpoints and a middle anchor only. The full labels are in the fixture/table, not crammed into a tiny axis.
+    label_indexes = {0, len(ts) // 2, len(ts) - 1}
+    for i, label in enumerate(labels):
+        if i in label_indexes:
+            parts.append(text(sx(i, len(ts)), BAR_BASE + 24, bucket_label(label), 10, "#94a3b8", "middle"))
+
+    # Legend lives below the graph lanes, not on top of data.
+    lx = LEFT
+    ly = HEIGHT - 64
     parts.append(f'<circle cx="{lx}" cy="{ly}" r="5" fill="#f8fafc"/>')
     parts.append(text(lx + 12, ly + 4, "α semantic lean", 12, "#d7dde8"))
-    parts.append(f'<rect x="{lx + 145}" y="{ly - 7}" width="15" height="12" fill="#334155" opacity="0.72"/>')
-    parts.append(text(lx + 168, ly + 4, "document count", 12, "#d7dde8"))
-    parts.append(line(lx + 305, ly, lx + 335, ly, "#60a5fa", 2))
-    parts.append(text(lx + 342, ly + 4, "cos optimism", 12, "#d7dde8"))
-    parts.append(line(lx + 448, ly, lx + 478, ly, "#f87171", 2))
-    parts.append(text(lx + 485, ly + 4, "cos doom", 12, "#d7dde8"))
+    parts.append(f'<rect x="{lx + 160}" y="{ly - 7}" width="15" height="12" fill="#334155" opacity="0.74"/>')
+    parts.append(text(lx + 183, ly + 4, "document count", 12, "#d7dde8"))
+    parts.append(line(lx + 328, ly, lx + 360, ly, "#60a5fa", 2))
+    parts.append(text(lx + 368, ly + 4, "cos optimism", 12, "#d7dde8"))
+    parts.append(line(lx + 500, ly, lx + 532, ly, "#f87171", 2))
+    parts.append(text(lx + 540, ly + 4, "cos doom", 12, "#d7dde8"))
 
-    parts.append(text(LEFT, HEIGHT - 20, f"Correct reading: {correct}", 13, "#cbd5e1", weight="700"))
+    parts.append(text(LEFT, HEIGHT - 28, f"Correct reading: {correct}", 13, "#cbd5e1", weight="700"))
     parts.append('</svg>')
     return "\n".join(parts)
 
